@@ -55,6 +55,10 @@ primary_entity:
       readonly: true
       mapping:
         - scale: 10
+        - constraint: sensor
+          conditions:
+            - dps_val: '1'
+              value_redirect: floor_temperature
     - id: 106
       type: integer
       name: floor_temperature
@@ -178,11 +182,11 @@ secondary_entities:
         name: option
         mapping:
           - dps_val: '0'
-            name: Room
+            value: "Room"
             icon: "mdi:home-thermometer"
           - dps_val: '1'
-            name: Floor
+            value: "Floor"
             icon: "mdi:heating-coil"
           - dps_val: '2'
-            name: Room and Floor
+            value: "Both"
             icon: "mdi:thermometer"
