@@ -45,7 +45,7 @@ primary_entity:
           constraint: power
           conditions:
             - dps_val: true
-              value: heat
+              value: cool
             - dps_val: false
               value_redirect: power
               value: "off"
@@ -102,6 +102,10 @@ primary_entity:
       type: integer
       name: Adaptive Function
       readonly: true
+    - id: 111
+      type: string
+      name: sensor
+      readonly: true
     - id: 112
       type: integer
       name: unknown_112
@@ -116,7 +120,7 @@ primary_entity:
       readonly: true
 secondary_entities:
   - entity: lock
-    name: Child Lock
+    name: Controls Lock
     category: config
     dps:
       - id: 108
@@ -157,7 +161,7 @@ secondary_entities:
     dps:
       - id: 121
         type: integer
-        name: number
+        name: value
         unit: C
         range:
           min: 50
@@ -165,13 +169,13 @@ secondary_entities:
         mapping:
           - scale: 10
             step: 5
-  - entity: switch
+  - entity: select
     category: config
     name: Sensor
     dps:
       - id: 111
         type: string
-        name: switch
+        name: option
         mapping:
           - dps_val: '0'
             name: Room
