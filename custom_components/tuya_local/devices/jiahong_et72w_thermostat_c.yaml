@@ -1,0 +1,184 @@
+name: Jiahong ET-72W Thermostat (C)
+primary_entity:
+  entity: climate
+  dps:
+    - id: 101
+      type: boolean
+      name: power
+      mapping:
+        - dps_val: false
+          value: "off"
+      hidden: true
+    - id: 102
+      type: integer
+      name: temperature
+      range:
+        min: 50
+        max: 300
+      mapping:
+        - scale: 10
+          step: 5
+    - id: 103
+      type: string
+      name: hvac_mode
+      mapping:
+        - dps_val: "Smart"
+          icon: "mdi:calendar-sync"
+          constraint: power
+          conditions:
+            - dps_val: true
+              value: auto
+            - dps_val: false
+              value_redirect: power
+              value: "off"
+        - dps_val: "Manual"
+          icon: "mdi:fire"
+          constraint: power
+          conditions:
+            - dps_val: true
+              value: heat
+            - dps_val: false
+              value_redirect: power
+              value: "off"
+        - dps_val: "Anti_frozen"
+          icon: "mdi:snowflake"
+          constraint: power
+          conditions:
+            - dps_val: true
+              value: heat
+            - dps_val: false
+              value_redirect: power
+              value: "off"
+    - id: 105
+      type: integer
+      name: current_temperature
+      readonly: true
+      mapping:
+        - scale: 10
+    - id: 106
+      type: integer
+      name: floor_temperature
+      readonly: true
+      mapping:
+        - scale: 10
+    - id: 118
+      type: boolean
+      name: hvac_action
+      readonly: true
+      mapping:
+        - dps_val: true
+          constraint: power
+          conditions:
+            - dps_val: true
+              value: heating
+            - dps_val: false
+              value_redirect: power
+              value: "off"
+        - dps_val: false
+          constraint: power
+          conditions:
+            - dps_val: true
+              value: idle
+            - dps_val: false
+              value_redirect: power
+              value: "off"
+    - id: 116
+      type: integer
+      name: Power Multiplier
+      readonly: true
+    - id: 104
+      type: integer
+      name: unknown_104
+      readonly: true
+    - id: 107
+      type: boolean
+      name: unknown_107
+      readonly: true
+    - id: 109
+      type: boolean
+      name: unknown_109
+      readonly: true
+    - id: 110
+      type: integer
+      name: Adaptive Function
+      readonly: true
+    - id: 112
+      type: integer
+      name: unknown_112
+      readonly: true
+    - id: 113
+      type: integer
+      name: unknown_113
+      readonly: true
+    - id: 117
+      type: integer
+      name: unknown_117
+      readonly: true
+secondary_entities:
+  - entity: lock
+    name: Child Lock
+    category: config
+    dps:
+      - id: 108
+        type: boolean
+        name: lock
+        mapping:
+          - dps_val: true
+            icon: "mdi:hand-back-right-off"
+          - dps_val: false
+            icon: "mdi:hand-back-right"
+  - entity: sensor
+    name: Room Temperature
+    class: temperature
+    readonly: true
+    dps:
+      - id: 105
+        type: integer
+        name: sensor
+        unit: C
+        class: measurement
+        mapping:
+          - scale: 10
+  - entity: sensor
+    name: Floor Temperature
+    class: temperature
+    readonly: true
+    dps:
+      - id: 106
+        type: integer
+        name: sensor
+        unit: C
+        class: measurement
+        mapping:
+          - scale: 10
+  - entity: number
+    category: config
+    name: Room Limit
+    dps:
+      - id: 121
+        type: integer
+        name: number
+        unit: C
+        range:
+          min: 50
+          max: 300
+        mapping:
+          - scale: 10
+            step: 5
+  - entity: switch
+    category: config
+    name: Sensor
+    dps:
+      - id: 111
+        type: string
+        name: switch
+        mapping:
+          - dps_val: '0'
+            name: Room
+            icon: "mdi:home-thermometer"
+          - dps_val: '1'
+            name: Floor
+            icon: "mdi:heating-coil"
+          - dps_val: '2'
+            name: Room and Floor
+            icon: "mdi:thermometer"
