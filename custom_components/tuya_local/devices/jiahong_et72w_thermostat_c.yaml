@@ -18,12 +18,6 @@ primary_entity:
       mapping:
         - scale: 10
           step: 5
-    - id: 105
-      type: integer
-      name: current_temperature
-      readonly: true
-      mapping:
-        - scale: 10
     - id: 103
       type: string
       name: hvac_mode
@@ -55,15 +49,18 @@ primary_entity:
             - dps_val: false
               value_redirect: power
               value: "off"
+    - id: 105
+      type: integer
+      name: current_temperature
+      readonly: true
+      mapping:
+        - scale: 10
     - id: 106
       type: integer
       name: floor_temperature
       readonly: true
       mapping:
         - scale: 10
-    - id: 103
-      type: string
-      name: unknown_103
     - id: 118
       type: boolean
       name: hvac_action
@@ -85,6 +82,34 @@ primary_entity:
             - dps_val: false
               value_redirect: power
               value: "off"
+    - id: 116
+      type: integer
+      name: Power Multiplier
+      readonly: true
+    - id: 104
+      type: integer
+      name: unknown_104
+      readonly: true
+    - id: 107
+      type: boolean
+      name: unknown_107
+      readonly: true
+    - id: 109
+      type: boolean
+      name: unknown_109
+      readonly: true
+    - id: 112
+      type: integer
+      name: unknown_112
+      readonly: true
+    - id: 113
+      type: integer
+      name: unknown_113
+      readonly: true
+    - id: 117
+      type: integer
+      name: unknown_117
+      readonly: true
 secondary_entities:
   - entity: lock
     name: Child Lock
@@ -109,7 +134,7 @@ secondary_entities:
         unit: C
         class: measurement
         mapping:
-          - scale: 2
+          - scale: 10
   - entity: sensor
     name: Floor Temperature
     class: temperature
@@ -151,5 +176,5 @@ secondary_entities:
             name: Floor
             icon: "mdi:heating-coil"
           - dps_val: '2'
-            name: Both
+            name: Room and Floor
             icon: "mdi:thermometer"
