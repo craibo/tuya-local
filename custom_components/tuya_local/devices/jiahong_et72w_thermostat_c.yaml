@@ -98,6 +98,10 @@ primary_entity:
       type: boolean
       name: unknown_109
       readonly: true
+    - id: 110
+      type: integer
+      name: Adaptive Function
+      readonly: true
     - id: 112
       type: integer
       name: unknown_112
