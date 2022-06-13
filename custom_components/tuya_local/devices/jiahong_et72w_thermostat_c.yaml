@@ -54,11 +54,14 @@ primary_entity:
       name: current_temperature
       readonly: true
       mapping:
-        - scale: 10
         - constraint: sensor
           conditions:
+            - dps_val: '0'
+              scale: 10
             - dps_val: '1'
               value_redirect: floor_temperature
+            - dps_val: '2'
+              scale: 10
     - id: 106
       type: integer
       name: floor_temperature
