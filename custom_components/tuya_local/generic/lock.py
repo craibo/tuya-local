@@ -32,7 +32,7 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
         lock = self._lock_dps.get_value(self._device)
 
         if lock is None:
-            return STATE_UNAVAILABLE
+            return None
         else:
             return STATE_LOCKED if lock else STATE_UNLOCKED
 
