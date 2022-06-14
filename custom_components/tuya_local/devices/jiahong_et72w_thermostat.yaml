@@ -14,7 +14,7 @@ primary_entity:
       name: temperature
       mapping:
         - constraint: temperature_unit
-          condition:
+          conditions:
             - dps_value: false
               scale: 10
               step: 5
@@ -161,7 +161,7 @@ secondary_entities:
         class: measurement
         mapping:
           - constraint: temperature_unit
-            condition:
+            conditions:
               - dps_value: false
                 unit: C
                 scale: 10
@@ -185,7 +185,7 @@ secondary_entities:
         class: measurement
         mapping:
           - constraint: temperature_unit
-            condition:
+            conditions:
               - dps_value: false
                 unit: C
                 scale: 10
@@ -219,7 +219,7 @@ secondary_entities:
         name: value
         mapping:
           - constraint: temperature_unit
-            condition:
+            conditions:
               - dps_value: false
                 unit: C
                 scale: 10
