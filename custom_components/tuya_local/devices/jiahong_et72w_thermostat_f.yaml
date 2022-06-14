@@ -1,4 +1,4 @@
-name: Jiahong ET-72W Thermostat
+name: Jiahong ET-72W Thermostat (F)
 primary_entity:
   entity: climate
   dps:
@@ -13,19 +13,11 @@ primary_entity:
       type: integer
       name: temperature
       range:
-        min: 50
-        max: 400
+        min: 120
+        max: 750
       mapping:
-        - scale: 10
-          step: 5
-          constraint: temperature_unit
-          conditions:
-            - dps_value: true
-              scale: 10
-              step: 30
-              range:
-                min: 122
-                max: 750
+        - step: 30
+          scale: 10
     - id: 103
       type: string
       name: hvac_mode
@@ -146,47 +138,29 @@ secondary_entities:
   - entity: sensor
     name: Room Temperature
     class: temperature
-    unit: C
     readonly: true
     icon: "mdi:home-thermometer"
     dps:
-      - id: 107
-        name: temperature_unit
-        type: boolean
-        readonly: true
-        hidden: true
       - id: 105
         type: integer
         name: sensor
+        unit: F
         class: measurement
         mapping:
           - scale: 10
-            constraint: temperature_unit
-            conditions:
-              - dps_value: true
-                unit: F
   - entity: sensor
     name: Floor Temperature
     class: temperature
-    unit: C
     readonly: true
     icon: "mdi:thermometer-lines"
     dps:
-      - id: 107
-        name: temperature_unit
-        type: boolean
-        readonly: true
-        hidden: true
       - id: 106
         type: integer
         name: sensor
+        unit: F
         class: measurement
         mapping:
           - scale: 10
-            constraint: temperature_unit
-            conditions:
-              - dps_value: true
-                unit: F
   - entity: sensor
     name: Energy
     class: energy
@@ -202,32 +176,18 @@ secondary_entities:
   - entity: number
     category: config
     name: Room Temperature Limit
-    unit: C
     icon: "mdi:thermometer-chevron-down"
-    range:
-      min: 100
-      max: 400
     dps:
-      - id: 107
-        name: temperature_unit
-        type: boolean
-        readonly: true
-        hidden: true
       - id: 121
         type: integer
         name: value
+        unit: F
+        range:
+          min: 120
+          max: 750
         mapping:
-          - scale: 10
-            step: 5
-            constraint: temperature_unit
-            conditions:
-              - dps_value: true
-                unit: F
-                scale: 10
-                step: 30
-                range:
-                  min: 510
-                  max: 750
+          - step: 30
+            scale: 10
   - entity: select
     category: config
     name: Temperature Sensor
@@ -263,17 +223,3 @@ secondary_entities:
             value: "7 (Adaptive)"
           - dps_val: 3
             value: "5+1+1 (Adaptive)"
-  - entity: select
-    category: config
-    name: Temperature Unit
-    icon: "mdi:temperature-celsius"
-    dps:
-      - id: 107
-        type: boolean
-        name: option
-        mapping:
-          - dps_val: true
-            value: "Fahrenheit"
-            icon: "mdi:temperature-fahrenheit"
-          - dps_val: false
-            value: "Celsius"
