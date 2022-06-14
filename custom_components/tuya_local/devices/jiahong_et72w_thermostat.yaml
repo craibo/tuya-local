@@ -202,7 +202,11 @@ secondary_entities:
   - entity: number
     category: config
     name: Room Temperature Limit
+    unit: C
     icon: "mdi:thermometer-chevron-down"
+    range:
+      min: 100
+      max: 400
     dps:
       - id: 107
         name: temperature_unit
@@ -212,10 +216,6 @@ secondary_entities:
       - id: 121
         type: integer
         name: value
-        unit: C
-        range:
-          min: 100
-          max: 400
         mapping:
           - scale: 10
             step: 5
