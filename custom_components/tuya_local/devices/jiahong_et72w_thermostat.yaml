@@ -280,5 +280,6 @@ secondary_entities:
         mapping:
           - dps_val: true
             value: "Fahrenheit"
+            icon: "mdi:temperature-fahrenheit"
           - dps_val: false
             value: "Celsius"
