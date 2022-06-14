@@ -12,14 +12,15 @@ primary_entity:
     - id: 102
       type: integer
       name: temperature
-      range:
-        min: 50
-        max: 400
       mapping:
-        - scale: 10
-          step: 5
-          constraint: temperature_unit
+        - constraint: temperature_unit
           conditions:
+            - dps_value: false
+              scale: 10
+              step: 5
+              range:
+                min: 50
+                max: 400
             - dps_value: true
               scale: 10
               step: 30
@@ -146,7 +147,6 @@ secondary_entities:
   - entity: sensor
     name: Room Temperature
     class: temperature
-    unit: C
     readonly: true
     icon: "mdi:home-thermometer"
     dps:
@@ -160,15 +160,17 @@ secondary_entities:
         name: sensor
         class: measurement
         mapping:
-          - scale: 10
-            constraint: temperature_unit
+          - constraint: temperature_unit
             conditions:
+              - dps_value: false
+                unit: C
+                scale: 10
               - dps_value: true
                 unit: F
+                scale: 10
   - entity: sensor
     name: Floor Temperature
     class: temperature
-    unit: C
     readonly: true
     icon: "mdi:thermometer-lines"
     dps:
@@ -182,11 +184,14 @@ secondary_entities:
         name: sensor
         class: measurement
         mapping:
-          - scale: 10
-            constraint: temperature_unit
+          - constraint: temperature_unit
             conditions:
+              - dps_value: false
+                unit: C
+                scale: 10
               - dps_value: true
                 unit: F
+                scale: 10
   - entity: sensor
     name: Energy
     class: energy
@@ -212,15 +217,16 @@ secondary_entities:
       - id: 121
         type: integer
         name: value
-        unit: C
-        range:
-          min: 100
-          max: 400
         mapping:
-          - scale: 10
-            step: 5
-            constraint: temperature_unit
+          - constraint: temperature_unit
             conditions:
+              - dps_value: false
+                unit: C
+                scale: 10
+                step: 5
+                range:
+                  min: 100
+                  max: 400
               - dps_value: true
                 unit: F
                 scale: 10
