@@ -1,4 +1,4 @@
-name: Jiahong ET-72W Thermostat (C)
+name: Jiahong ET-72W Thermostat (F)
 primary_entity:
   entity: climate
   dps:
@@ -13,11 +13,11 @@ primary_entity:
       type: integer
       name: temperature
       range:
-        min: 50
-        max: 400
+        min: 120
+        max: 750
       mapping:
-        - scale: 10
-          step: 5
+        - step: 30
+          scale: 10
     - id: 103
       type: string
       name: hvac_mode
@@ -144,7 +144,7 @@ secondary_entities:
       - id: 105
         type: integer
         name: sensor
-        unit: C
+        unit: F
         class: measurement
         mapping:
           - scale: 10
@@ -157,7 +157,7 @@ secondary_entities:
       - id: 106
         type: integer
         name: sensor
-        unit: C
+        unit: F
         class: measurement
         mapping:
           - scale: 10
@@ -181,13 +181,13 @@ secondary_entities:
       - id: 121
         type: integer
         name: value
-        unit: C
+        unit: F
         range:
-          min: 100
-          max: 400
+          min: 120
+          max: 750
         mapping:
-          - scale: 10
-            step: 5
+          - step: 30
+            scale: 10
   - entity: select
     category: config
     name: Temperature Sensor
