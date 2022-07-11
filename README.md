@@ -1,3 +1,5 @@
+## This Fork is no longer active and the additional device has been merged into https://github.com/make-all/tuya-local
+
 # Home Assistant Tuya Local component
 
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=make-all_tuya-local&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=make-all_tuya-local)
