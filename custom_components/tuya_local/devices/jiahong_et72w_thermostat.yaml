@@ -81,12 +81,6 @@ primary_entity:
     - id: 109
       type: boolean
       name: unknown_109
-    - id: 112
-      type: integer
-      name: unknown_112
-    - id: 113
-      type: integer
-      name: unknown_113
 secondary_entities:
   - entity: lock
     name: Screen lock
@@ -138,16 +132,62 @@ secondary_entities:
             value: C
           - dps_val: true
             value: F
+  - entity: number
+    category: config
+    name: Room temperature calibration
+    dps:
+      - id: 112
+        range:
+          min: -50
+          max: 50
+        mapping:
+          - scale: 10
+            step: 10
+            constraint: temperature_unit
+            conditions:
+              - dps_val: true
+                step: 30
+                range:
+                  min: 120
+                  max: 750
+      - id: 107
+        name: unit
+        type: boolean
+        mapping:
+          - dps_val: false
+            value: C
+          - dps_val: true
+            value: F
+  - entity: number
+    category: config
+    name: Floor temperature calibration
+    dps:
+      - id: 112
   - entity: sensor
     name: Runtime
     dps:
       - id: 117
         type: integer
         name: sensor
+        class: measurement
         unit: min
+  - entity: select
+    category: config
+    name: Floor Sensor Type
+    icon: "mdi:heating-coil"
+    dps:
       - id: 116
         type: integer
-        name: calibration
+        name: option
+        mapping:
+          - dps_val: 3950
+            value: 3950
+          - dps_val: 3600
+            value: 3600
+          - dps_val: 3700
+            value: 3700
+          - dps_val: 0
+            value: 0
   - entity: select
     category: config
     translation_key: temperature_unit
