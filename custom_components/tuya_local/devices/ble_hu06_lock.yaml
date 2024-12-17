@@ -2,6 +2,8 @@ name: Smart lock
 products:
   - id: stugc8dl
     name: HU06
+  - id: xicdxood
+    name: Impression ImSmart C502
 primary_entity:
   entity: lock
   dps:
@@ -124,6 +126,11 @@ secondary_entities:
           - dps_val: "13"
             value: true
           - value: false
+      - id: 21
+        type: string
+        name: description
+        optional: true
+        persist: false
   - entity: binary_sensor
     name: Duress
     class: safety
@@ -150,20 +157,6 @@ secondary_entities:
             value: ring
           - dps_val: false
             value: null
-  - entity: binary_sensor
-    name: Doorbell
-    deprecated: event_doorbell
-    class: sound
-    category: diagnostic
-    dps:
-      - id: 24
-        type: boolean
-        name: sensor
-        optional: true
-        persist: false
-        mapping:
-          - dps_val: null
-            value: false
   - entity: number
     name: Doorbell volume
     category: config

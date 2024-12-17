@@ -23,7 +23,7 @@ primary_entity:
             - dps_val: dehumidify
               value: dry
             - dps_val: auto
-              value: heatcool
+              value: heat_cool
     - id: 2
       type: integer
       name: current_temperature
@@ -58,10 +58,6 @@ primary_entity:
           value: medium
         - dps_val: high
           value: high
-    - id: 6
-      type: bitfield
-      name: fault_code
-      optional: true
     - id: 9
       type: integer
       name: max_temperature
@@ -94,10 +90,13 @@ secondary_entities:
           - dps_val: 0
             value: false
           - value: true
+      - id: 6
+        type: bitfield
+        name: fault_code
+        optional: true
   - entity: button
-    name: Filter reset
+    translation_key: filter_reset
     category: config
-    class: restart
     dps:
       - id: 7
         type: boolean

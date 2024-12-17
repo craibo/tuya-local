@@ -5,7 +5,7 @@ products:
 primary_entity:
   entity: sensor
   class: enum
-  name: Status
+  translation_key: status
   icon: "mdi:ev-station"
   dps:
     - id: 101
@@ -13,19 +13,19 @@ primary_entity:
       name: sensor
       mapping:
         - dps_val: no_connet
-          value: Disconnected
+          value: available
         - dps_val: connect
-          value: Connected
+          value: plugged_in
         - dps_val: charing
-          value: Charging
+          value: charging
         - dps_val: wait_rfid
-          value: Waiting for authorization
+          value: waiting_for_authorization
         - dps_val: finish
-          value: Charged
+          value: charged
         - dps_val: wait_charing
-          value: Delaying charge
+          value: waiting
         - dps_val: error
-          value: Error
+          value: fault
     - id: 3
       type: string
       optional: true
@@ -47,9 +47,6 @@ primary_entity:
           value: Charging ended
         - dps_val: charger_fault
           value: Charger fault
-    - id: 10
-      type: bitfield
-      name: fault_code
     - id: 11
       type: string
       optional: true
@@ -90,6 +87,20 @@ primary_entity:
       optional: true
       name: online_state
 secondary_entities:
+  - entity: binary_sensor
+    class: problem
+    category: diagnostic
+    dps:
+      - id: 10
+        type: bitfield
+        name: sensor
+        mapping:
+          - dps_val: 0
+            value: false
+          - value: true
+      - id: 10
+        type: bitfield
+        name: fault_code
   - entity: button
     name: Clear energy
     class: restart
@@ -121,6 +132,7 @@ secondary_entities:
                   max: 16
       - id: 114
         type: integer
+        optional: true
         name: value_alt
         unit: A
         range:
@@ -146,6 +158,10 @@ secondary_entities:
         range:
           min: 0
           max: 15
+      - id: 121
+        type: string
+        optional: true
+        name: display
   - entity: sensor
     class: energy
     dps:
@@ -261,6 +277,14 @@ secondary_entities:
         range:
           min: 0
           max: 15
+      - id: 120
+        type: string
+        optional: true
+        name: session_duration
+      - id: 122
+        type: string
+        optional: true
+        name: display
   - entity: select
     name: Toggle charging
     icon: "mdi:ev-plug-type2"

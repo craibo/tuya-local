@@ -28,26 +28,8 @@ primary_entity:
       optional: true
       persist: false
     - id: 7
-      name: action
+      name: learning_state
       type: string
-      mapping:
-        - dps_val: opening
-          value: opening
-          constraint: current_position
-          conditions:
-            - dps_val: 0
-              value: opened
-        - dps_val: closing
-          value: closing
-          constraint: current_position
-          conditions:
-            - dps_val: 100
-              value: closed
-            - dps_val: null
-              value: closed
-    - id: 12
-      name: fault_code
-      type: bitfield
 secondary_entities:
   - entity: select
     category: config
@@ -78,6 +60,20 @@ secondary_entities:
         type: integer
         unit: lx
         class: measurement
+  - entity: binary_sensor
+    class: problem
+    category: diagnostic
+    dps:
+      - id: 12
+        type: bitfield
+        name: sensor
+        mapping:
+          - dps_val: 0
+            value: false
+          - value: true
+      - id: 12
+        type: bitfield
+        name: fault_code
   - entity: sensor
     class: battery
     category: diagnostic

@@ -60,7 +60,6 @@ class TestKyvolE30Vacuum(MultiButtonTests, MultiSensorTests, TuyaDeviceTestCase)
                 {
                     "dps": RSTFILTER_DPS,
                     "name": "button_filter_reset",
-                    "device_class": ButtonDeviceClass.RESTART,
                 },
             ]
         )
@@ -109,6 +108,7 @@ class TestKyvolE30Vacuum(MultiButtonTests, MultiSensorTests, TuyaDeviceTestCase)
 
         self.mark_secondary(
             [
+                "binary_sensor_problem",
                 "button_edge_brush_reset",
                 "button_roll_brush_reset",
                 "button_filter_reset",

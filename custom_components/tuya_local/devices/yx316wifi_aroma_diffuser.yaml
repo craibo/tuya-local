@@ -6,16 +6,11 @@ products:
     name: YX316WIFI
 primary_entity:
   entity: fan
-  icon: "mdi:scent"
+  translation_key: aroma_diffuser
   dps:
     - id: 2
       name: switch
       type: boolean
-      mapping:
-        - dps_val: true
-          icon: "mdi:scent"
-        - dps_val: false
-          icon: "mdi:scent-off"
     - id: 3
       type: string
       name: preset_mode
@@ -27,11 +22,7 @@ primary_entity:
         - dps_val: "4H"
           value: "high"
         - dps_val: "10SEC"
-          value: "10 seconds"
-    - id: 11
-      name: fault_code
-      type: bitfield
-      optional: true
+          value: "intermittent"
 secondary_entities:
   # "master" switch - turns on and off both light and diffuser
   - entity: switch
@@ -104,3 +95,21 @@ secondary_entities:
             icon: "mdi:speaker-off"
             value: false
             hidden: true
+  - entity: binary_sensor
+    class: problem
+    category: diagnostic
+    dps:
+      - id: 11
+        type: bitfield
+        optional: true
+        name: sensor
+        mapping:
+          - dps_val: 0
+            value: false
+          - dps_val: null
+            value: false
+          - value: true
+      - id: 11
+        type: bitfield
+        optional: true
+        name: fault_code

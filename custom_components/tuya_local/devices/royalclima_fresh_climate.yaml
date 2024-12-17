@@ -62,9 +62,6 @@ primary_entity:
           value: high
         - dps_val: strong
           value: strong
-    - id: 20
-      type: bitfield
-      name: fault_code
     - id: 110
       type: bitfield
       name: flags
@@ -255,8 +252,16 @@ secondary_entities:
       - id: 123
         type: hex
         name: switch
-        mapping:
-          - mask: "0008"
+        mask: "0008"
+  - entity: switch
+    name: Adaptive display brightness
+    category: config
+    icon: "mdi:brightness-auto"
+    dps:
+      - id: 123
+        type: hex
+        name: switch
+        mask: "0080"
   - entity: switch
     name: Beep
     category: config
@@ -265,8 +270,7 @@ secondary_entities:
       - id: 123
         type: hex
         name: switch
-        mapping:
-          - mask: "0010"
+        mask: "0010"
   - entity: switch
     translation_key: uv_sterilization
     category: config
@@ -274,8 +278,15 @@ secondary_entities:
       - id: 123
         type: hex
         name: switch
-        mapping:
-          - mask: "0020"
+        mask: "0020"
+  - entity: switch
+    translation_key: evaporator_cleaning
+    category: config
+    dps:
+      - id: 123
+        type: hex
+        name: switch
+        mask: "0004"
   - entity: switch
     name: Eco mode
     category: config
@@ -284,8 +295,7 @@ secondary_entities:
       - id: 123
         type: hex
         name: switch
-        mapping:
-          - mask: "0001"
+        mask: "0001"
   - entity: switch
     translation_key: anti_frost
     category: config
@@ -293,8 +303,7 @@ secondary_entities:
       - id: 123
         type: hex
         name: switch
-        mapping:
-          - mask: "1000"
+        mask: "1000"
   - entity: switch
     name: Anti-mildew
     category: config
@@ -303,8 +312,7 @@ secondary_entities:
       - id: 123
         type: hex
         name: switch
-        mapping:
-          - mask: "0100"
+        mask: "0100"
   - entity: switch
     name: Soft wind
     category: config
@@ -313,8 +321,7 @@ secondary_entities:
       - id: 123
         type: hex
         name: switch
-        mapping:
-          - mask: "8000"
+        mask: "8000"
   - entity: binary_sensor
     class: problem
     category: diagnostic
@@ -326,6 +333,9 @@ secondary_entities:
           - dps_val: 0
             value: false
           - value: true
+      - id: 20
+        type: bitfield
+        name: fault_code
   - entity: sensor
     class: pm25
     category: diagnostic
@@ -352,3 +362,15 @@ secondary_entities:
       - id: 103
         type: boolean
         name: sensor
+  - entity: sensor
+    class: power
+    category: diagnostic
+    dps:
+      - id: 116
+        type: integer
+        name: sensor
+        unit: W
+        precision: 1
+        class: measurement
+        mapping:
+          - scale: 30

@@ -83,7 +83,12 @@ class TestRenphoPurifier(
         )
 
     def test_supported_features(self):
-        self.assertEqual(self.subject.supported_features, FanEntityFeature.PRESET_MODE)
+        self.assertEqual(
+            self.subject.supported_features,
+            FanEntityFeature.PRESET_MODE
+            | FanEntityFeature.TURN_OFF
+            | FanEntityFeature.TURN_ON,
+        )
 
     def test_preset_modes(self):
         self.assertCountEqual(
@@ -148,6 +153,3 @@ class TestRenphoPurifier(
                 "hepa_filter_life": 105,
             },
         )
-
-    def test_icons(self):
-        self.assertEqual(self.basicSwitch.icon, "mdi:power-sleep")

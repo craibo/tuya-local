@@ -23,18 +23,12 @@ primary_entity:
       type: boolean
       optional: true
       mapping:
-        - constraint: hvac_mode
-          conditions:
-            - dps_val: false
-              value: "off"
-            - dps_val: true
-              mapping:
-                - dps_val: false
-                  value: idle
-                - dps_val: true
-                  value: heating
-                - dps_val: null
-                  value: idle
+        - dps_val: false
+          value: idle
+        - dps_val: true
+          value: heating
+        - dps_val: null
+          value: idle
     - id: 16
       name: temperature
       type: integer
@@ -57,8 +51,7 @@ primary_entity:
         - scale: 10
 secondary_entities:
   - entity: button
-    name: Factory reset
-    class: restart
+    translation_key: factory_reset
     category: config
     dps:
       - id: 39

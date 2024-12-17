@@ -4,6 +4,8 @@ products:
     name: Petoneer Nutri Mini
   - id: pxwlmmdodfppms3a
     name: GiotoHun Pet feeder
+  - id: ojqmjnoxqygqldsp
+    name: PUPPY KITTY Automatic Cat & Dog Feeder
 primary_entity:
   entity: button
   name: Quick Feed
@@ -27,8 +29,7 @@ secondary_entities:
         name: sensor
         type: integer
   - entity: button
-    class: restart
-    name: Factory reset
+    translation_key: factory_reset
     category: config
     dps:
       - id: 9

@@ -1,6 +1,6 @@
 name: Advanced energy monitoring smartplug
 products:
-  - id: bf819f3f0e0f958b17ufid
+  - id: auojpnb4hpc13ftb
     name: Arlec PC191HA
   - id: 2fxr6sttw70cgbau
     name: Antela ZY-OYD-Y
@@ -8,6 +8,8 @@ products:
     name: Eightree ET20
   - id: 7k5zwdhwlnrtsuhu
     name: SWE SAGEWE F2s501-GB
+  - id: uqehhcrmk5depvtl
+    name: Smatrul 16A/20A
 primary_entity:
   entity: switch
   class: outlet
@@ -18,10 +20,6 @@ primary_entity:
     - id: 21
       type: integer
       name: test_bit
-      optional: true
-    - id: 26
-      type: bitfield
-      name: fault_code
       optional: true
     - id: 41
       type: string
@@ -117,10 +115,13 @@ secondary_entities:
           - dps_val: null
             value: false
           - value: true
+      - id: 26
+        type: bitfield
+        name: fault_code
+        optional: true
   - entity: select
     category: config
-    name: Initial state
-    icon: "mdi:toggle-switch"
+    translation_key: initial_state
     dps:
       - id: 38
         type: string
@@ -128,11 +129,11 @@ secondary_entities:
         optional: true
         mapping:
           - dps_val: "on"
-            value: "On"
+            value: "on"
           - dps_val: "off"
-            value: "Off"
+            value: "off"
           - dps_val: memory
-            value: "Last State"
+            value: memory
   - entity: switch
     name: Overcharge cutoff
     category: config

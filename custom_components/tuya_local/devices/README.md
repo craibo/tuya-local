@@ -89,6 +89,23 @@ use `translation_only_key` instead (this is mostly useful to retain
 backward compatibility where `translation_key` is used to define icons and
 attribute strings but not the entity name.
 
+### `translation_placeholders`
+
+*Optional*
+
+A container for placeholders to be used in the translation string. Contents
+are a mapping from parameter keys used in the translation files, to actual
+values to be used for this entity. If this is specified, then either
+translation_key or translation_only_key must be specified with it.
+
+Example:
+
+```
+  translation_key: switch_x
+  translation_placeholders:
+    x: "1"
+```
+
 ### `category`
 
 *Optional.*
@@ -151,6 +168,14 @@ recognized as a standard attribute by the entitiy implementation, the
 attribute will be returned as a readonly custom attribute on the entity.
 If you need non-standard attributes to be able to be set, you will need
 to use a secondary entity for that.
+
+### `sensitive`
+
+*Optional, default false.*
+
+A boolean setting yo mark attributes as containing potentially sensitive
+data.  Setting this to true will result in the data being redacted in
+device diagnostics output.
 
 ### `readonly`
 
@@ -323,6 +348,18 @@ user but you still want to map for feedback coming from the device. For
 example, some devices have a "Manual" mode, which is automatically selected
 when adjustments are made to other settings, but should not be available as
 an explicit mode for the user to select.
+
+### `available`
+
+*Optional.*
+
+This works the similarly to `hidden` above, but instead of a boolean
+value, this should be set to the name of an attribute, which returns a
+boolean value, so that the value can be dynamically hidden or shown. A
+typical use is where variants of a device use the same config, and
+have a flag attribute that indicates whether certain features are
+available or not. The mapping will be hidden from the values list when
+the referenced attribute is showing `false`, and shown when it is `true`.
 
 ### `scale`
 
@@ -524,6 +561,18 @@ Note that each condition must specify a `dps_val` to match againt. If you want t
 ```
 
 
+## Generic dps
+
+The following dps may be defined for any entity type. The names should be
+avoided for any extra attribute that is not for the listed purpose.
+
+- **available** (optional, string) a dp name that returns a boolean indicating
+whether the entity should show as available or not (even when it appears to be
+returning valid state). This may be used to disable entities that the device
+indicates it does not support, through a feature flag dp. This should only be
+used when the device is permanently indicating a missing feature, as HA may
+hide the entity if it is marked as unavailable early enough during startup.
+
 ## Entity types
 
 Entities have specific mappings of dp names to functions. Any unrecognized dp name is added to the entity as a read-only extra attribute, so can be observed and queried from HA, but if you need to be able to change it, you should split it into its own entity of an appropriate type (number, select, switch for example).
@@ -565,10 +614,11 @@ from the camera.
 - **hvac_mode** (optional, mapping of strings) a dp to control the mode of the device.
     Possible values are: `"off", cool, heat, heat_cool, auto, dry, fan_only`
 - **hvac_action** (optional, string) a dp that reports the current action of the device.
-    Possible values are: `"off", idle, cooling, heating, drying, fan`
+    Possible values are: `"off", idle, cooling, heating, drying, fan, defrosting`
 - **preset_mode** (optional, mapping of strings) a dp to control preset modes of the device.
    Any value is allowed, but HA has some standard presets:
     `none, eco, away, boost, comfort, home, sleep, activity`
+   There are also some presets defined by this integration for use with various `translation_key`s, see translations/en.json for details.
 - **swing_mode** (optional, mapping of strings) a dp to control swing modes of the device.
    Possible values are: `"off", vertical, horizontal`
 - **temperature** (optional, number) a dp to set the target temperature of the device.
@@ -594,6 +644,7 @@ Either **position** or **open** should be specified.
 - **action** (optional, string): a dp that reports the current state of the cover.
    Special values are `opening, closing`
 - **open** (optional, boolean): a dp that reports if the cover is open. Only used if **position** is not available.
+- **tilt_position** (optional, number): a dp to control the tilt opening of the cover (an example is venetian blinds that tilt as well as go up and down). The range will be auto-converted to the 0-100 expected by HA.
 
 ### `fan`
 - **switch** (optional, boolean): a dp to control the power state of the fan
@@ -613,9 +664,10 @@ Humidifer can also cover dehumidifiers (use class to specify which).
 - **mode** (optional, mapping of strings): a dp to control preset modes of the device
 - **humidity** (optional, number): a dp to control the target humidity of the device
 - **current_humidity** (optional, number): a dp to report the current humidity measured by the device
+- **action** (optional, string): a dp to report the current action the device is performing. Valid actions are `humidifying`, `drying`, `idle` and `off`
 
 ### `lawn_mower`
-- **activity** (required, string): a dp to report the current activity of the mower. Valid activities are `mowing`, `paused`, `docked`, `error` (from LawnMowerActivities in https://github.com/home-assistant/core/blob/dev/homeassistant/components/lawn_mower/const.py). Any additional activities should be mapped to one of those, and exposed through an extra attribute or sensor entity that shows all the statuses that the mower is reporting.
+- **activity** (required, string): a dp to report the current activity of the mower. Valid activities are `mowing`, `paused`, `docked`, `error`, `returning` (from LawnMowerActivities in https://github.com/home-assistant/core/blob/dev/homeassistant/components/lawn_mower/const.py). Any additional activities should be mapped to one of those, and exposed through an extra attribute or sensor entity that shows all the statuses that the mower is reporting.
 
 - **command** (required, string): a dp to send commands to the mower. Recognised commands are `start_mowing`, `pause` and `dock`. Any additional commands should be implemented via a `button` or `select` entity.
 
@@ -623,8 +675,8 @@ Humidifer can also cover dehumidifiers (use class to specify which).
 - **switch** (optional, boolean): a dp to control the on/off state of the light
 - **brightness** (optional, number): a dp to control the dimmer if available.  If a range is provided, the value will be automatically scaled into the 0-255 range for HA, so there is no need to provide a scale. If there is a fixed list of mappings, the values should be between 0 (off) and 255 (full brightness). If there is no switch dp, a brightness of 0 will be sent to turn the light off.
 - **color_temp** (optional, number): a dp to control the color temperature if available. See `target_range` above for mapping Tuya's range into Kelvin.
-
-- **rgbhsv** (optional, hex): a dp to control the color of the light, using encoded RGB and HSV values. The `format` field names recognized for decoding this field are `r`, `g`, `b`, `h`, `s`, `v`.
+- **rgbhsv** (optional, hex): a dp to control the color of the light, using encoded RGB and HSV values. The `format` field names recognized for decoding this field are `r`, `g`, `b`, `h`, `s`, `v`. If both RGB and HSV values are supplied by the light, the HSV will be preferred. Either RGB values or HS values are required. If V is missing, the brightness dp is required.
+- **named_color** (optional, string): a dp to control the color of the light, using a list of named colors. This is mutually exclusive with the rgbhsv dp. The list of recognised colors is from the HA COLORS table at https://github.com/home-assistant/core/blob/dev/homeassistant/util/color.py
 - **color_mode** (optional, mapping of strings): a dp to control which mode to use if the light supports multiple modes.
     Special values: `white, color_temp, hs, xy, rgb, rgbw, rgbww`, others will be treated as effects,
 	Note: only white, color_temp and hs are currently supported, others listed above are reserved and may be implemented in future when the need arises.
@@ -638,7 +690,8 @@ Humidifer can also cover dehumidifiers (use class to specify which).
 The unlock... dps below are normally integers, but can also be boolean, in which case
 no information will be available about which specific credential was used to unlock the lock.
 
-- **lock** (optional, boolean): a dp to control the lock state: true = locked, false = unlocked
+- **lock** (optional, boolean): a dp to control the lock state: true = locked, false = unlocked.
+- **open** (optional, boolean): a dp to open or close the door or gate controlled by the lock, or if marked readonly to report the open status.
 - **unlock_fingerprint** (optional, integer): a dp to identify the fingerprint used to unlock the lock.
 - **unlock_password** (optional, integer): a dp to identify the password used to unlock the lock.
 - **unlock_temp_pwd** (optional, integer): a dp to identify the temporary password used to unlock the lock.

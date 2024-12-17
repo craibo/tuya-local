@@ -13,7 +13,7 @@ primary_entity:
       name: command
       mapping:
         - dps_val: standby
-          value: standby
+          value: stop
         - dps_val: spiral
           value: clean_spot
         - dps_val: wall_follow
@@ -73,39 +73,6 @@ primary_entity:
           value: High
         - dps_val: normal
           value: Medium
-    - id: 18
-      type: bitfield
-      name: error
-      mapping:
-        - dps_val: 0
-        - dps_val: 1
-          value: wheel_overload
-        - dps_val: 2
-          value: side_brush_entanglement
-        - dps_val: 3
-          value: brush_abnormality
-        - dps_val: 4
-          value: dustbin_not_installed
-        - dps_val: 5
-          value: left_collision_stuck
-        - dps_val: 6
-          value: right_collision_stuck
-        - dps_val: 7
-          value: machine_off_ground
-        - dps_val: 8
-          value: front_drop_trigger
-        - dps_val: 9
-          value: left_drop_trigger
-        - dps_val: 10
-          value: right_drop_trigger
-        - dps_val: 11
-          value: fan_abnormality
-        - dps_val: 12
-          value: water_tank_not_installed
-        - dps_val: 13
-          value: magnetic_field_abnormality
-        - dps_val: 14
-          value: slippage_abnormality
 secondary_entities:
   - entity: sensor
     class: battery
@@ -125,8 +92,56 @@ secondary_entities:
         type: integer
         name: sensor
         unit: min
+  - entity: binary_sensor
+    class: problem
+    category: diagnostic
+    dps:
+      - id: 18
+        type: bitfield
+        name: sensor
+        mapping:
+          - dps_val: 0
+            value: false
+          - value: true
+      - id: 18
+        type: bitfield
+        name: fault_code
+      - id: 18
+        type: bitfield
+        name: description
+        mapping:
+          - dps_val: 0
+            value: ok
+          - dps_val: 1
+            value: wheel_overload
+          - dps_val: 2
+            value: side_brush_entanglement
+          - dps_val: 3
+            value: brush_abnormality
+          - dps_val: 4
+            value: dustbin_not_installed
+          - dps_val: 5
+            value: left_collision_stuck
+          - dps_val: 6
+            value: right_collision_stuck
+          - dps_val: 7
+            value: machine_off_ground
+          - dps_val: 8
+            value: front_drop_trigger
+          - dps_val: 9
+            value: left_drop_trigger
+          - dps_val: 10
+            value: right_drop_trigger
+          - dps_val: 11
+            value: fan_abnormality
+          - dps_val: 12
+            value: water_tank_not_installed
+          - dps_val: 13
+            value: magnetic_field_abnormality
+          - dps_val: 14
+            value: slippage_abnormality
   - entity: select
-    name: Water control
+    translation_key: mopping
     category: config
     icon: "mdi:cup-water"
     dps:
@@ -134,9 +149,9 @@ secondary_entities:
         name: option
         type: string
         mapping:
-          - dps_val: "closed"
-            value: "Off"
-          - dps_val: "low"
-            value: Low
-          - dps_val: "high"
-            value: Strong
+          - dps_val: closed
+            value: "off"
+          - dps_val: low
+            value: low
+          - dps_val: high
+            value: high

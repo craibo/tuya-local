@@ -35,6 +35,11 @@ secondary_entities:
       - id: 101
         type: string
         name: event
+        mapping:
+          - dps_val: idle
+            value: idle
+          - dps_val: request
+            value: request
   - entity: select
     name: Real time
     icon: "mdi:connection"
@@ -51,7 +56,7 @@ secondary_entities:
           - dps_val: idle
             value: Idle
   - entity: sensor
-    name: Status
+    name: status
     class: enum
     category: diagnostic
     dps:

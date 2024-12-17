@@ -1,7 +1,11 @@
 name: Sprinkler controller
 products:
   - id: e8fwsklivj87msao
-    name: Smart sprinkler controller
+    name: SH07-8
+  - id: mxh2sjigimo463mg
+    name: Aquarobo SH07S-TY
+  - id: figmzixtki7bourh
+    name: Leictory LK06
 primary_entity:
   entity: valve
   name: Valve 1
@@ -39,6 +43,7 @@ secondary_entities:
       - id: 105
         name: valve
         type: boolean
+        optional: true
   - entity: valve
     name: Valve 6
     class: water
@@ -46,20 +51,56 @@ secondary_entities:
       - id: 106
         name: valve
         type: boolean
+        optional: true
   - entity: valve
     name: Valve 7
-    class: water
-    dps:
-      - id: 109
-        name: valve
-        type: boolean
-  - entity: valve
-    name: Valve 8
     class: water
     dps:
       - id: 110
         name: valve
         type: boolean
+        optional: true
+  - entity: valve
+    name: Valve 8
+    class: water
+    dps:
+      - id: 111
+        name: valve
+        type: boolean
+        optional: true
+  - entity: sensor
+    name: Weather
+    class: enum
+    category: diagnostic
+    dps:
+      - id: 108
+        type: string
+        name: sensor
+        optional: true
+        mapping:
+          - dps_val: sunny
+            value: sunny
+            icon: "mdi:weather-sunny"
+          - dps_val: cloudy
+            value: cloudy
+            icon: "mdi:weather-cloudy"
+          - dps_val: rainy
+            value: rainy
+            icon: "mdi:weather-rainy"
+          - dps_val: snowy
+            value: snowy
+            icon: "mdi:weather-snowy"
+          - dps_val: null
+            value: unavailable
+            icon: "mdi:weather-sunny-off"
+  - entity: valve
+    name: All valves
+    class: water
+    dps:
+      - id: 109
+        name: valve
+        type: boolean
+        optional: true
   - entity: switch
     name: Valve 1
     category: config

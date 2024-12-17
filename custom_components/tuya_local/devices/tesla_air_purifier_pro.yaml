@@ -1,6 +1,7 @@
-name: Tesla Pro M smart air purifier
+name: Air purifier
 products:
   - id: 3hjcrjktvkoim7zu
+    name: Tesla Air Pro M
 primary_entity:
   entity: fan
   translation_only_key: fan_with_presets
@@ -86,14 +87,14 @@ secondary_entities:
         type: string
         name: option
         mapping:
-          - dps_val: "cancel"
-            value: "cancel"
+          - dps_val: cancel
+            value: cancel
           - dps_val: "1h"
-            value: "1 hour"
+            value: "1h"
           - dps_val: "4h"
-            value: "4 hours"
+            value: "4h"
           - dps_val: "8h"
-            value: "8 hours"
+            value: "8h"
   - entity: sensor
     class: pm25
     category: diagnostic

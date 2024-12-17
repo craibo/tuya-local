@@ -22,7 +22,6 @@ primary_entity:
       optional: true
 secondary_entities:
   - entity: number
-    name: Countdown
     translation_key: timer
     category: config
     dps:
@@ -32,31 +31,21 @@ secondary_entities:
         range:
           min: 0
           max: 86400
-        mapping:
-          - scale: 0
-            step: 1
         unit: s
   - entity: select
-    name: Restart Status
+    translation_key: initial_state
     category: config
-    icon: "mdi:toggle-switch"
     dps:
       - id: 39
         type: string
         name: option
         mapping:
           - dps_val: 0
-            value: "Off"
+            value: "off"
           - dps_val: 1
-            value: "On"
+            value: "on"
           - dps_val: 2
-            value: Keep state
-      - id: 42
-        type: string
-        name: cycle_time
-      - id: 43
-        type: string
-        name: random_time
+            value: memory
   - entity: select
     name: Light Mode
     category: config

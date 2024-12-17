@@ -1,4 +1,3 @@
-from homeassistant.components.button import ButtonDeviceClass
 from homeassistant.components.fan import FanEntityFeature
 from homeassistant.components.sensor import STATE_CLASS_MEASUREMENT, SensorDeviceClass
 from homeassistant.const import PERCENTAGE, UnitOfTemperature
@@ -39,18 +38,17 @@ class TestHimoxH05Purifier(
         self.setUpBasicButton(
             RESET_DPS,
             self.entities.get("button_filter_reset"),
-            ButtonDeviceClass.RESTART,
         )
         self.setUpBasicLock(LOCK_DPS, self.entities.get("lock_child_lock"))
         self.setUpBasicSelect(
             TIMER_DPS,
             self.entities.get("select_timer"),
             {
-                "cancel": "Off",
-                "1h": "1 hour",
-                "2h": "2 hours",
-                "4h": "4 hours",
-                "8h": "8 hours",
+                "cancel": "cancel",
+                "1h": "1h",
+                "2h": "2h",
+                "4h": "4h",
+                "8h": "8h",
             },
         )
         self.setUpMultiSensors(
@@ -86,7 +84,9 @@ class TestHimoxH05Purifier(
     def test_supported_features(self):
         self.assertEqual(
             self.subject.supported_features,
-            FanEntityFeature.PRESET_MODE,
+            FanEntityFeature.PRESET_MODE
+            | FanEntityFeature.TURN_ON
+            | FanEntityFeature.TURN_OFF,
         )
 
     def test_preset_modes(self):

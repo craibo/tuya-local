@@ -1,7 +1,5 @@
 # Home Assistant Tuya Local component
 
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=make-all_tuya-local&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=make-all_tuya-local) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=make-all_tuya-local&metric=security_rating)](https://sonarcloud.io/dashboard?id=make-all_tuya-local) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=make-all_tuya-local&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=make-all_tuya-local) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=make-all_tuya-local&metric=ncloc)](https://sonarcloud.io/dashboard?id=make-all_tuya-local) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=make-all_tuya-local&metric=coverage)](https://sonarcloud.io/dashboard?id=make-all_tuya-local)
-
 Please report any [issues](https://github.com/make-all/tuya-local/issues) and feel free to raise [pull requests](https://github.com/make-all/tuya-local/pulls).
 [Many others](https://github.com/make-all/tuya-local/blob/main/ACKNOWLEDGEMENTS.md) have contributed their help already.
 
@@ -52,6 +50,10 @@ they can handle, with typical limits being 1 or 3, depending on the specific
 Tuya module they are using.  This severely limits the number of sub devices
 that can be connected through this integration.
 
+Sub devices should be added using the `device_id`, `address` and `local_key`
+of the hub they are attached to, and the `node_id` of the sub-device. If there
+is no `node_id` listed, try using the `uuid` instead.
+
 Tuya Zigbee devices are usually standard zigbee devices, so as an
 alternative to this integration with a Tuya hub, you can use a
 supported Zigbee USB stick or Wifi hub with
@@ -76,11 +78,8 @@ Documentation on building a device configuration file is in [/custom_components/
 
 If your device is not listed, you can find the information required to add a configuration for it in the following locations:
 
-1. When attempting to add the device, if it is not supported, you will either get a message saying the device cannot be recognised at all, or you will be offered a list of devices (maybe a list of length 1) that are partial matches, often simple switch is among them.  You can cancel the process at this point, and look in the Home Assistant log - there should be a message there containing the current data points (dps) returned by the device.
+1. When attempting to add the device, if it is not supported, you will either get a message saying the device cannot be recognised at all, or you will be offered a list of devices that are partial matches. You can cancel the process at this point, and look in the Home Assistant log - there should be a message there containing the current data points (dps) returned by the device.
 2. If you have signed up for [iot.tuya.com](https://iot.tuya.com/) to get your local key, you should also have access to the API Explorer under "Cloud". Under "Device Control" there is a function called "Query Things Data Model", which returns the dp_id in addition to range information that is needed for integer and enum data types.
-3. By following the method described at the link below, you can find information for all the data points supported by your device, including those not listed by the API explorer method above and those that are only returned under specific conditions. Ignore the requirement for a Tuya Zigbee gateway, that is for Zigbee devices, and this integration does not currently support devices connected via a gateway, but the non-Zigbee/gateway specific parts of the procedure apply also to WiFi devices.
-
-https://www.zigbee2mqtt.io/advanced/support-new-devices/03_find_tuya_data_points.html
 
 If you file an issue to request support for a new device, please include the following information:
 
@@ -112,10 +111,21 @@ After installing, you can easily configure your devices using the Integrations c
 [![Add Integration to your Home Assistant
 instance.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=tuya_local)
 
+### Choose your configuration path
+
+There are two options for configuring a device:
+- You can login to Tuya cloud with the Smart Life app and retrieve a list of devices and the necessary local connection data.
+- You can provide all the necessary information manually [as per the instructions below](#finding-your-device-id-and-local-key).
+
+The first choice essentially automates all the manual steps of the second and without needing to create a Tuya IOT developer account. This is especially important now that Tuya has started time limiting access to a key data access capability in the IOT developer portal to only a month with the ability to refresh the trial of that only every 6 months.
+
+The cloud assisted choice will guide you through authenticating, choosing a device to add from the list of devices associated with your Smart Life account, locate the device on your local subnet and then drop you into [Stage One](#stage-one) with fully populated data necessary to move forward to [Stage Two](#stage-two).
+
+Then Smart Life authentication token expires after a small number of hours and so is not saved by the integration. But, as long as you don't restart Home Assistant, this allows you to add multiple devices one after another only needing to authenticate once for the first one.
+
 ### Stage One
 
-The first stage of configuration is to provide the information needed to
-connect to the device.
+The first stage of configuration is to provide the information needed to connect to the device.
 
 You will need to provide your device's IP address or hostname, device
 ID and local key; the last two can be found using [the instructions
@@ -214,6 +224,10 @@ not like this and require all commands to set only a single dp at a
 time, so you may need to experiment with your automations to see
 whether a single command or multiple commands (with delays, see above)
 work best with your devices.
+
+When adding devices, some devices that are detected as protocol version
+3.3 at first require version 3.2 to work correctly. Either they cannot be
+detected, or work as read-only if the pprotocol is set to 3.3.
 
 ## Heater issues
 

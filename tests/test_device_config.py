@@ -33,6 +33,7 @@ CONDMAP_SCHEMA = vol.Schema(
         vol.Optional("value"): vol.Maybe(vol.Any(str, int, bool, float)),
         vol.Optional("value_redirect"): str,
         vol.Optional("value_mirror"): str,
+        vol.Optional("available"): str,
         vol.Optional("range"): {
             vol.Required("min"): int,
             vol.Required("max"): int,
@@ -43,8 +44,6 @@ CONDMAP_SCHEMA = vol.Schema(
         },
         vol.Optional("scale"): vol.Any(int, float),
         vol.Optional("step"): vol.Any(int, float),
-        vol.Optional("mask"): str,
-        vol.Optional("endianness"): str,
         vol.Optional("invert"): True,
         vol.Optional("unit"): str,
         vol.Optional("icon"): vol.Match(r"^mdi:"),
@@ -89,6 +88,7 @@ DP_SCHEMA = vol.Schema(
                 "bitfield",
                 "unixtime",
                 "json",
+                "utf16b64",
             ]
         ),
         vol.Required("name"): str,
@@ -98,15 +98,24 @@ DP_SCHEMA = vol.Schema(
         },
         vol.Optional("unit"): str,
         vol.Optional("precision"): vol.Any(int, float),
-        vol.Optional("class"): str,
+        vol.Optional("class"): vol.In(
+            [
+                "measurement",
+                "total",
+                "total_increasing",
+            ]
+        ),
         vol.Optional("optional"): True,
         vol.Optional("persist"): False,
         vol.Optional("hidden"): True,
         vol.Optional("readonly"): True,
+        vol.Optional("sensitive"): True,
         vol.Optional("force"): True,
         vol.Optional("icon_priority"): int,
         vol.Optional("mapping"): [MAPPING_SCHEMA],
         vol.Optional("format"): [FORMAT_SCHEMA],
+        vol.Optional("mask"): str,
+        vol.Optional("endianness"): vol.In(["little"]),
     }
 )
 ENTITY_SCHEMA = vol.Schema(
@@ -139,6 +148,7 @@ ENTITY_SCHEMA = vol.Schema(
         vol.Optional("name"): str,
         vol.Optional("class"): str,
         vol.Optional(vol.Or("translation_key", "translation_only_key")): str,
+        vol.Optional("translation_placeholders"): dict[str, str],
         vol.Optional("category"): vol.In(["config", "diagnostic"]),
         vol.Optional("icon"): vol.Match(r"^mdi:"),
         vol.Optional("icon_priority"): int,
@@ -211,7 +221,7 @@ KNOWN_DPS = {
     "lawn_mower": {"required": ["activity", "command"], "optional": []},
     "light": {
         "required": [{"or": ["switch", "brightness", "effect"]}],
-        "optional": ["color_mode", "color_temp", "rgbhsv"],
+        "optional": ["color_mode", "color_temp", {"xor": ["rgbhsv", "named_color"]}],
     },
     "lock": {
         "required": [],
@@ -504,7 +514,11 @@ class TestDeviceConfig(IsolatedAsyncioTestCase):
                 self.check_entity(entity, cfg)
                 entities.append(entity.config_id)
             # check entities are unique
-            self.assertCountEqual(entities, set(entities))
+            self.assertCountEqual(
+                entities,
+                set(entities),
+                f"Duplicate entities in {cfg}",
+            )
 
             # If there are no secondary entities, check that it is intended
             if not secondary:
@@ -513,6 +527,42 @@ class TestDeviceConfig(IsolatedAsyncioTestCase):
                         key.startswith("sec"),
                         f"misspelled secondary_entities in {cfg}",
                     )
+
+    def test_configs_can_be_matched(self):
+        """Test that the config files can be matched to a device."""
+        for cfg in available_configs():
+            optional = set()
+            required = set()
+            parsed = TuyaDeviceConfig(cfg)
+            products = parsed._config.get("products")
+            # Configs with a product list can be matched by product id
+            if products:
+                p_match = False
+                for p in products:
+                    if p.get("id"):
+                        p_match = True
+                if p_match:
+                    continue
+
+            for entity in parsed.all_entities():
+                for dp in entity.dps():
+                    if dp.optional:
+                        optional.add(dp.id)
+                    else:
+                        required.add(dp.id)
+
+            self.assertGreater(
+                len(required),
+                0,
+                msg=f"No required dps found in {cfg}",
+            )
+
+            for dp in required:
+                self.assertNotIn(
+                    dp,
+                    optional,
+                    msg=f"Optional dp {dp} is required in {cfg}",
+                )
 
     # Most of the device_config functionality is exercised during testing of
     # the various supported devices.  These tests concentrate only on the gaps.
@@ -536,10 +586,10 @@ class TestDeviceConfig(IsolatedAsyncioTestCase):
     async def test_dps_async_set_readonly_value_fails(self):
         """Test that setting a readonly dps fails."""
         mock_device = MagicMock()
-        cfg = get_config("goldair_gpph_heater")
-        error_code = cfg.primary_entity.find_dps("error")
+        cfg = get_config("aquatech_x6_water_heater")
+        temp = cfg.primary_entity.find_dps("temperature")
         with self.assertRaises(TypeError):
-            await error_code.async_set_value(mock_device, 1)
+            await temp.async_set_value(mock_device, 20)
 
     def test_dps_values_is_empty_with_no_mapping(self):
         """
@@ -695,9 +745,7 @@ class TestDeviceConfig(IsolatedAsyncioTestCase):
             "id": "1",
             "name": "test",
             "type": "hex",
-            "mapping": [
-                {"mask": "ff00"},
-            ],
+            "mask": "ff00",
         }
         mock_device = MagicMock()
         mock_device.get_property.return_value = "babe"
@@ -714,9 +762,7 @@ class TestDeviceConfig(IsolatedAsyncioTestCase):
             "id": "1",
             "name": "test",
             "type": "hex",
-            "mapping": [
-                {"mask": "ff00"},
-            ],
+            "mask": "ff00",
         }
         mock_device = MagicMock()
         mock_device.get_property.return_value = "babe"
@@ -732,3 +778,13 @@ class TestDeviceConfig(IsolatedAsyncioTestCase):
         mock_config = {"id": "1", "name": "test", "type": "string"}
         cfg = TuyaDpsConfig(mock_entity, mock_config)
         self.assertIsNone(cfg.default)
+
+    def test_matching_with_product_id(self):
+        """Test that matching with product id works"""
+        cfg = get_config("smartplugv1")
+        self.assertTrue(cfg.matches({}, ["37mnhia3pojleqfh"]))
+
+    def test_matched_product_id_with_conflict_rejected(self):
+        """Test that matching with product id fails when there is a conflict"""
+        cfg = get_config("smartplugv1")
+        self.assertFalse(cfg.matches({"1": "wrong_type"}, ["37mnhia3pojleqfh"]))

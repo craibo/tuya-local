@@ -71,19 +71,19 @@ class TestWilfaHazeHumidifier(
                     "dps": TIMER_DPS,
                     "name": "select_timer",
                     "options": {
-                        "cancel": "Off",
-                        "1": "1 hour",
-                        "2": "2 hours",
-                        "3": "3 hours",
-                        "4": "4 hours",
-                        "5": "5 hours",
-                        "6": "6 hours",
-                        "7": "7 hours",
-                        "8": "8 hours",
-                        "9": "9 hours",
-                        "10": "10 hours",
-                        "11": "11 hours",
-                        "12": "12 hours",
+                        "cancel": "cancel",
+                        "1": "1h",
+                        "2": "2h",
+                        "3": "3h",
+                        "4": "4h",
+                        "5": "5h",
+                        "6": "6h",
+                        "7": "7h",
+                        "8": "8h",
+                        "9": "9h",
+                        "10": "10h",
+                        "11": "11h",
+                        "12": "12h",
                     },
                 },
                 {
@@ -125,6 +125,7 @@ class TestWilfaHazeHumidifier(
         )
         self.mark_secondary(
             [
+                "binary_sensor_problem",
                 "binary_sensor_tank_empty",
                 "light_display",
                 "light_mood",
@@ -181,8 +182,7 @@ class TestWilfaHazeHumidifier(
 
     def test_extra_state_attributes(self):
         self.dps[UNKNOWN20_DPS] = 20
-        self.dps[ERROR_DPS] = 22
         self.assertDictEqual(
             self.subject.extra_state_attributes,
-            {"unknown_20": 20, "error": 22},
+            {"unknown_20": 20},
         )

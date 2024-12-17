@@ -32,9 +32,6 @@ primary_entity:
     - id: 6
       type: integer
       name: current_humidity
-    - id: 19
-      type: bitfield
-      name: fault_code
 secondary_entities:
   - entity: fan
     dps:
@@ -84,6 +81,9 @@ secondary_entities:
           - dps_val: 0
             value: false
           - value: true
+      - id: 19
+        type: bitfield
+        name: fault_code
   - entity: select
     name: Indicators
     icon: "mdi:led-on"
@@ -155,13 +155,13 @@ secondary_entities:
         name: option
         mapping:
           - dps_val: cancel
-            value: "Off"
+            value: cancel
           - dps_val: "1h"
-            value: "1 hour"
+            value: "1h"
           - dps_val: "2h"
-            value: "2 hours"
+            value: "2h"
           - dps_val: "3h"
-            value: "3 hours"
+            value: "3h"
   - entity: sensor
     translation_key: time_remaining
     class: duration
@@ -172,8 +172,7 @@ secondary_entities:
         name: sensor
         unit: min
   - entity: switch
-    name: Sleep
-    icon: "mdi:power-sleep"
+    translation_key: sleep
     category: config
     dps:
       - id: 102

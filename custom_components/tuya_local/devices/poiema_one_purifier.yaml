@@ -48,9 +48,8 @@ secondary_entities:
         type: boolean
         name: lock
   - entity: button
-    name: Filter reset
+    translation_key: filter_reset
     category: config
-    class: restart
     dps:
       - id: 11
         type: boolean
@@ -64,17 +63,17 @@ secondary_entities:
         name: option
         mapping:
           - dps_val: cancel
-            value: "off"
+            value: cancel
           - dps_val: "1h"
-            value: "1 hour"
+            value: "1h"
           - dps_val: "2h"
-            value: "2 hours"
+            value: "2h"
           - dps_val: "3h"
-            value: "3 hours"
+            value: "3h"
           - dps_val: "4h"
-            value: "4 hours"
+            value: "4h"
           - dps_val: "5h"
-            value: "5 hours"
+            value: "5h"
   - entity: sensor
     translation_key: time_remaining
     category: diagnostic
