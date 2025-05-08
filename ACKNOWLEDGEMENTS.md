@@ -861,7 +861,7 @@ Further device support has been made with the assistance of users. Please consid
 - [Kevin-0u](https://github.com/Kevin-0u) for contributing support for Drexma WiStat thermostat and Amantii Bespoke fireplace.
 - [dorianmartinez31](https://github.com/dorianmartinez31) for contributing support for GTS8-40 2P circuit breaker.
 - [jayPare](https://github.com/jayPare) for contributing support for Hornbill Y4 keypad lock.
-- [pacorola](https://github.com/pacorola) for contributing support for Ferco GN1 RF thermostat.
+- [pacorola](https://github.com/pacorola) for contributing support for Ferco GN1 RF thermostat and Kimex cinema screen.
 - [Paxy](https://github.com/Paxy) for contributing support for MT15/MT29 air quality box.
 - [jakealake18](https://github.com/jakealake18) for contributing improvements to Galaxy projector light.
 - [jmontane](https://github.com/jmontane) for contributing Catalan translations.
@@ -890,3 +890,7 @@ Further device support has been made with the assistance of users. Please consid
 - [kliutchenia](https://github.com/kliutchenia) for contributing support for QS-WIFI-C02 dual curtain module.
 - [JanOstrowka](https://github.com/JanOstrowka) for contributing support for Tonepie T1 Pro Max cat litter box.
 - [KillDozerX2](https://github.com/KillDozerX2) for contributing support for Honeywell Air Touch P2 air purifier.
+- [Sapd](https://github.com/Sapd) for contributing support for Teknopoint Idra Skiv air conditioner.
+- [wuhgit](https://github.com/wuhgit) for contributing support for SC116-WZ3A camera.
+- [Airey001](https://github.com/Airey001) for contributing support for Neo-A Duoqu cat litter box.
+- [Akira97One](https://github.com/Akira97One) for assisting with support for SMCM DDV-207 Doorbell Pro camera.

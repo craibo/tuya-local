@@ -1,11 +1,7 @@
 name: Camera
 products:
-  - id: n7h0m2x7i2yzol0p
-    manufacturer: LSC Smart Connect
-    model: PTZ
-  - id: rogprwflblumx2co
-    manufacturer: LSC Smart Connect
-    model: Rotatable
+  - id: b60fclvud3xtcufm
+    model: SC116-WZ3A
 entities:
   - entity: camera
     dps:
@@ -14,13 +10,10 @@ entities:
         optional: true
         name: switch
         mapping:
-          - dps_val: true
-            value: false
           - dps_val: false
             value: true
-          - dps_val: null
-            value: true
-            hidden: true
+          - dps_val: true
+            value: false
       - id: 134
         type: boolean
         name: motion_enable
@@ -29,31 +22,30 @@ entities:
         type: boolean
         name: record
         optional: true
-      - id: 115
-        type: base64
-        optional: true
-        persist: false
-        sensitive: true
-        name: snapshot
+  - entity: light
+    translation_key: indicator
+    category: config
+    dps:
+      - id: 101
+        type: boolean
+        name: switch
   - entity: switch
     name: Flip image
     category: config
+    icon: "mdi:flip-vertical"
     dps:
       - id: 103
         type: boolean
         name: switch
   - entity: switch
-    name: Timestamp
+    name: Watermark
     category: config
+    icon: "mdi:watermark"
     dps:
       - id: 104
         type: boolean
         optional: true
         name: switch
-        mapping:
-          - dps_val: null
-            value: false
-            hidden: true
   - entity: select
     name: Motion sensitivity
     icon: "mdi:motion-sensor"
@@ -86,13 +78,11 @@ entities:
             value: "Off"
           - dps_val: "2"
             value: "On"
-          - dps_val: null
-            value: Auto
-            hidden: true
   - entity: sensor
     name: SD status
     class: enum
     category: diagnostic
+    icon: "mdi:micro-sd"
     dps:
       - id: 110
         type: integer
@@ -118,7 +108,8 @@ entities:
         optional: true
   - entity: button
     name: Format SD card
-    category: config
+    category: diagnostic
+    icon: "mdi:delete-empty"
     dps:
       - id: 111
         type: boolean
@@ -161,7 +152,7 @@ entities:
           - value: false
   - entity: button
     name: PTZ right-up
-    icon: "mdi:top-right"
+    icon: "mdi:pan-top-right"
     category: config
     dps:
       - id: 119
@@ -317,10 +308,32 @@ entities:
           - dps_val: null
             value: false
             hidden: true
+  - entity: event
+    name: Alarm
+    dps:
       - id: 185
         type: string
-        name: log_message
+        name: event
         optional: true
+        mapping:
+          - dps_val: null
+            value: null
+          - value: alert
+      - id: 185
+        type: string
+        name: message
+        optional: true
+  - entity: number
+    name: Volume
+    category: config
+    icon: "mdi:volume-high"
+    dps:
+      - id: 160
+        type: integer
+        name: value
+        range:
+          min: 1
+          max: 10
   - entity: switch
     name: Motion tracking
     icon: "mdi:motion-sensor"
@@ -334,6 +347,30 @@ entities:
           - dps_val: false
             icon: "mdi:motion-sensor-off"
   - entity: switch
+    name: Cry detection
+    icon: "mdi:baby-carriage"
+    category: config
+    dps:
+      - id: 167
+        type: boolean
+        name: switch
+        optional: true
+        mapping:
+          - dps_val: false
+            icon: "mdi:baby-carriage-off"
+  - entity: switch
+    name: Pet detection
+    icon: "mdi:paw"
+    category: config
+    dps:
+      - id: 187
+        type: boolean
+        name: switch
+        optional: true
+        mapping:
+          - dps_val: false
+            icon: "mdi:paw-off"
+  - entity: switch
     name: Human detection
     icon: "mdi:human"
     category: config
@@ -342,11 +379,13 @@ entities:
         type: boolean
         name: switch
         optional: true
+        mapping:
+          - dps_val: false
+            icon: "mdi:account-off"
   - entity: select
     name: Anti-flicker
     icon: "mdi:television-classic"
     category: config
-    hidden: unavailable
     dps:
       - id: 188
         type: string
@@ -359,43 +398,126 @@ entities:
             value: "50Hz"
           - dps_val: "2"
             value: "60Hz"
-      - id: 188
+  - entity: button
+    name: PTZ preset 1
+    icon: "mdi:numeric-1-circle"
+    category: config
+    dps:
+      - id: 190
         type: string
-        name: available
+        name: button
+        optional: true
+        mapping:
+          - dps_val: "1"
+            value: true
+          - value: false
+  - entity: button
+    name: PTZ preset 2
+    icon: "mdi:numeric-2-circle"
+    category: config
+    dps:
+      - id: 190
+        type: string
+        name: button
+        optional: true
+        mapping:
+          - dps_val: "2"
+            value: true
+          - value: false
+  - entity: button
+    name: PTZ preset 3
+    icon: "mdi:numeric-3-circle"
+    category: config
+    dps:
+      - id: 190
+        type: string
+        name: button
+        optional: true
+        mapping:
+          - dps_val: "3"
+            value: true
+          - value: false
+  - entity: button
+    name: PTZ preset 4
+    icon: "mdi:numeric-4-circle"
+    category: config
+    dps:
+      - id: 190
+        type: string
+        name: button
+        optional: true
+        mapping:
+          - dps_val: "4"
+            value: true
+          - value: false
+  - entity: button
+    name: Set PTZ preset 1
+    icon: "mdi:numeric-1-circle-outline"
+    category: config
+    dps:
+      - id: 199
+        type: string
+        name: button
+        optional: true
+        mapping:
+          - dps_val: "1"
+            value: true
+          - value: false
+  - entity: button
+    name: Set PTZ preset 2
+    icon: "mdi:numeric-2-circle-outline"
+    category: config
+    dps:
+      - id: 199
+        type: string
+        name: button
+        optional: true
+        mapping:
+          - dps_val: "2"
+            value: true
+          - value: false
+  - entity: button
+    name: Set PTZ preset 3
+    icon: "mdi:numeric-3-circle-outline"
+    category: config
+    dps:
+      - id: 199
+        type: string
+        name: button
+        optional: true
+        mapping:
+          - dps_val: "3"
+            value: true
+          - value: false
+  - entity: button
+    name: Set PTZ preset 4
+    icon: "mdi:numeric-4-circle-outline"
+    category: config
+    dps:
+      - id: 199
+        type: string
+        name: button
+        optional: true
+        mapping:
+          - dps_val: "4"
+            value: true
+          - value: false
+  - entity: event
+    class: motion
+    dps:
+      - id: 115
+        type: string
+        name: event
         optional: true
         mapping:
           - dps_val: null
-            value: false
-          - value: true
-  - entity: switch
-    name: Motion limit area
-    category: config
-    icon: "mdi:picture-in-picture-bottom-right-outline"
-    hidden: unavailable
-    dps:
-      - id: 168
-        type: boolean
-        optional: true
-        name: switch
-      - id: 168
-        type: boolean
-        optional: true
-        name: available
-        mapping:
-          - dps_val: null
-            value: false
-          - value: true
-  - entity: text
-    name: Motion limit area
-    hidden: true
-    icon: "mdi:picture-in-picture-bottom-right-outline"
-    category: config
-    dps:
-      - id: 169
+            value: null
+          - value: detected
+      - id: 115
         type: string
         optional: true
-        name: value
-      - id: 168
-        type: boolean
+        name: snapshot
+      - id: 212
+        type: string
         optional: true
-        name: available
+        name: message

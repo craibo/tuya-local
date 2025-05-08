@@ -119,6 +119,7 @@
 - Sensei Air Conditioner
 - Star-Light air conditioner (also confirmed to work with Polar branded devices)
 - Suntec Wellness Coolfixx portable air conditioner
+- Teknopoint Idra Skiv air conditioner
 - Tesla Smart TAF and AUX series air conditioners
 - TroniTechnik Hellnar Klimagerät
 - Trotec PAC-W 2600 SH heat pump
@@ -744,6 +745,7 @@ of device.
 - FS-03W curtain switch with backlight control
 - Graywind window shades
 - GW Motor roller blinds
+- Kimex motorized cinema screen
 - Kogan garage door with tilt sensor
 - KY motor 35W-10 shutter controller
 - Loonas smart curtain
@@ -861,6 +863,8 @@ port and password.
 - Nedis outdoor camera
 - Pinelake BF02 birdfeeder camera
 - RL video intercom (reported unable to connect)
+- SC116-WZ3A PTZ camera
+- SMCM DDV-207 Doorbell Pro camera
 
 ### Alarm control panels
 
@@ -885,6 +889,7 @@ port and password.
 - Ceres Plus pet feeder with camera
 - Cleverio PF100 pet feeder
 - Doel cat litter box
+- Duoqu Neo-A cat litter box
 - Els Pet Spaceship pet litter box
 - Faroro PF50 pet feeder
 - HoneyGuardian S56 pet feeder
